@@ -1,0 +1,179 @@
+<!doctype html>
+<title>The Forest of Lyrica - 6</title>
+<body id="body">
+<div id="stage">
+    
+    <h1>The Forest of Lyrica</h1>
+    <p id="score"></p>
+    <img id="background" src="" width="300" height="267">
+    <img id="dragimg" width="200" height="250">
+    <img id="npcimg"  width="100" height="150">
+    <img id="winlose" width="250" height="250">
+    <p id="output"></p>
+    <p id="npctext"></p>
+    <p id="wintext"></img>
+    <input id="input" type="text"> 
+    <button>enter</button>
+  </div>
+</body>
+<style>
+    *
+{
+  font-family: Merriweather;
+  color: #000;  
+  font-size: 16px;
+  padding: 0px;
+  margin: 0px;
+}
+
+@font-face 
+{
+  font-family: Merriweather;
+  src: url("/../ForestofLyrica/imatges2/Merriweather.ttf");
+}
+
+@font-face 
+{
+  font-family: Merriweather-Bold;
+  src: url("/../ForestofLyrica/imatges2/Merriweather-Bold.ttf");
+}
+
+@font-face 
+{
+  font-family: Ginga;
+  src: url("/../ForestofLyrica/imatges2/Ginga.ttf");
+}
+
+body {
+  background-image: url("/../ForestofLyrica/imatges2/wallpaper.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 100vh;
+}
+
+h1
+{
+  text-align: center;
+  font-family: Ginga;
+  font-size: 80px;
+  padding-bottom: 10px;
+  padding-top: 80px;
+  font-weight: normal;
+}
+em
+{
+  font-size: 14px;
+}
+p
+{
+  width: 300px;
+  margin: 0px auto;
+}
+#npctext {
+  width: 300px;
+  font-size: 15px;
+  color: #656565;
+  margin: 0px auto;
+}
+#score {
+    display: flex;
+    font-size: 20px;
+    margin: 0px auto;
+    color: black;
+}
+#wintext{
+  width: 300px;
+  font-weight: bold;
+  font-size: 20px;
+  margin: 0px 200px;
+}
+#background
+{
+  position: relative;
+  margin: 0px auto;
+  display: block;
+  margin-bottom: 20px;
+  z-index: 1;
+}
+
+#winlose {
+  display: none;
+  position: absolute;
+  top: 220px;
+  left: 150px;
+  z-index: 3;
+}
+#dragimg{
+  display: none;
+  position: absolute;
+  top: 255px;
+  left: 270px;
+  z-index: 2;
+}
+#npcimg {
+  display: none;
+  position: absolute;
+  top: 332px;
+  left: 300px;
+  z-index: 2;
+}
+input
+{
+  position: absolute;
+  bottom: 30px;
+  left: 135px;
+  width: 160px;
+  padding: 2px 2px 2px 5px;
+  border: 1px solid black;
+background-color: rgba(255,255,255,0.3);
+  -webkit-box-shadow: 5px 5px 3px rgba(0,0,0,0.5);
+	-moz-box-shadow: 5px 5px 3px rgba(0,0,0,0.5);
+	box-shadow: 3px 3px 5px rgba(0,0,0,0.4);
+}
+
+button
+{
+  position: absolute;
+  bottom: 30px;
+  left: 310px;
+  height: 25px;
+  width: 50px;
+  
+  font-family: Merriweather;
+	font-size: 14px;
+	color: #000;
+	border: 1px solid #000;
+	
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;	
+	
+	background:-webkit-linear-gradient(top, rgba(255,255,255,0.6), rgba(0,0,0,0.2));
+	background:-moz-linear-gradient(top, #a3a3a3, rgba(0,0,0,0.2));
+	background: linear-gradient(top, #a3a3a3, rgba(0,0,0,0.2));
+	
+	-webkit-box-shadow: 5px 5px 3px rgba(0,0,0,0.5);
+	-moz-box-shadow: 5px 5px 3px rgba(0,0,0,0.5);
+	box-shadow: 3px 3px 5px rgba(0,0,0,0.4);
+	
+	-webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+}
+
+
+#stage
+{
+  margin: 0 auto;
+  margin-top: 7.5%;
+  width: 500px;
+  height: 648px;
+  background-color: gray;
+  position: relative;
+  
+}
+
+</style>
+
+<script src = "script.js"></script>

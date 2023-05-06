@@ -1,0 +1,70 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Island Adventure</title>
+<body>
+  <section id="game">
+    <h1>Island Adventure</h1>
+    <div id="stage"></div>
+    <p id="output"></p> 
+  </section>
+<style>
+*
+{
+  padding: 0px;
+  margin: 0px;
+}
+body
+{
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  margin-top: 170px;
+}
+#stage 
+{
+  position: relative;
+  width: 900px;
+  height: 440px;
+  margin: 10px;
+  background-image: url("/IslandAdventure Apache/images/background.png");
+}
+
+.cell
+{
+  display: block;
+  position: absolute;
+  width: 64px;
+  height: 64px;
+}
+
+#game
+{
+  width: 910px;
+  height: 670px;
+  background-color: white;
+  border: 1px dashed black;
+}
+
+@font-face 
+{
+  font-family: PiratesWriters;
+  src: url("/IslandAdventure Apache/PiratesWriters.ttf");
+}
+
+h1
+{
+  text-align: center;
+  font-family: PiratesWriters;
+  font-size: 50px;
+}
+
+p
+{
+  font-family: PiratesWriters;
+  font-size: 20px;
+  width: 384px;
+  padding: 10px;
+}
+</style>
+<script src = "script.js"></script>
+</body>

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<html lang="en">
+    
+    <title>Document</title>
+    <img src="" width="300" height="267">
+    <p id="output"></p>
+    <input id="input" type="text" placeholder="Enter your action...">
+    <button>enter</button>
+
+
+    <script>
+        var map = [];
+
+    map[0] = "An old stone keep.";
+    map[1] = "A deep well.";
+    map[2] = "A sunny glade.";
+    map[3] = "A sleeping dragon.";
+    map[4] = "A narrow pathway.";
+    map[5] = "An ancient gate.";
+    map[6] = "The edge of a river.";
+    map[7] = "A lonely wooden bench.";
+    map[8] = "An isolated cottage. Faint music comes from inside.";
+    
+var maplocation = 4;
+
+    var images = [];
+    images[0] = "keep.png";
+    images[1] = "well.png";
+    images[2] = "glade.png";
+    images[3] = "dragon.png";
+    images[4] = "path.png";
+    images[5] = "gate.png";
+    images[6] = "river.png";
+    images[7] = "bench.png";
+    images[8] = "cottage.png"; 
+
+var blockedPathMessages = [];
+
+blockedPathMessages [0] = "It's too dangerous to move that way.";
+blockedPathMessages [1] = "A mysterious force holds you back.";
+blockedPathMessages [2] = "A tangle of thorns blocks your way.";
+blockedPathMessages [3] = "You can't step over the dragon.";
+blockedPathMessages [4] = "";
+blockedPathMessages [5] = "The gate locks shut.";
+blockedPathMessages [6] = "The river is too deep to cross.";
+blockedPathMessages [7] = "The trees are too thick to pass.";
+blockedPathMessages [8] = "You're too scared to go that way.";
+var items = ["flute", "stone", "sword"];
+var itemLocations = [1, 6, 8];    
+
+var backpack = [];
+
+var playersinput = "";
+
+var gamemessage="";
+
+var images = document.querySelector("img");
+
+    var actionsiknow = ["north","east", "south", "west", "help", "take", "use", "drop"];
+    var action = "";
+
+    var itemsIKnow = ["flute", "stone", "sword"];
+    var item = "";
+
+        var output = document.querySelector("#output");
+        output.innerHTML = map[maplocation];
+        var input = document.querySelector("#input"); 
+
+        var button = document.querySelector("button");
+        button.addEventListener("click", clickHandler,false);
+        button.style.cursor = "pointer";
+
+        render()
+
+        function clickHandler()
+        {
+            playgame();
+        }
+function playgame()
+{
+    playersinput = input.value;
+    playersinput = playersinput.toLocaleLowerCase();
+    gamemessage = "";
+    action = "";
+
+    for(i=0; i<actionsiknow.length; i++)
+    {
+        if(playersinput.indexOf(actionsiknow[i]) !== -1 )
+        {
+            action = actionsiknow[i];
+            console.log("player's action: "+ action);
+            break;
+        }
+    }
+    for(i = 0; i < itemsIKnow.length; i++)
+    {
+        if(playersInput.indexOf(itemsIKnow[i]) !== -1)
+        {
+        item = itemsIKnow[i];
+        console.log("player's item: " + item);
+        }
+    }
+    switch(action)
+    {
+        case "north":
+            if(maplocation >= 3) maplocation -= 3;
+            else gamemessage = blockedPathMessages[maplocation];
+            break;
+        case "east":
+            if(maplocation % 3 != 2) maplocation += 1;
+            else gamemessage = blockedPathMessages[maplocation];
+            break;
+        case "south":
+            if(maplocation < 6) maplocation +=3;
+            else gamemessage = blockedPathMessages[maplocation];
+            break;
+        case "west":
+            if(maplocation % 3 != 0) maplocation -= 1;
+            else gamemessage = blockedPathMessages[maplocation];
+            break;
+            case "take":
+        takeItem()
+            break;
+            case "drop":
+        dropItem();
+            break;
+            case "use":
+        useItem();
+            break;
+        default:
+            gameMessage = "I don't understand that.";
+    }
+
+    render();
+}
+
+
+function render()
+{
+    output.innerHTML = map[maplocation];
+    images.src = "/ForestofLyrica/imatges2/" + images[maplocation];
+    output.innerHTML += "<br><em>" + gamemessage + "</em>";
+    for(var i = 0; i < items.length; i++)
+    {
+    if(maplocation === itemLocations[i])
+    {
+        output.innerHTML += "<br>You see a <strong>" + 
+        items[i]+ 
+        "</strong> here.";
+    }
+    }
+    output.innerHTML += "<br><em>" + gameMessage + "</em>";
+} 
+    </script>
