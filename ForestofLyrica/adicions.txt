@@ -1,0 +1,28 @@
+Afegiments al joc:
+	- Expansió del mapa a un 4x4 amb entorns ambientats en el bosc.
+
+	- Afegits personatges/NPCs, que apareixen en zones aleatòries:
+		- El "Gnome" i "Fairy", que afecten positivament en la puntuació (Gnome equival a +5 i Fairy a +10).
+		- El llop, qui matarà al jugador al aparèixer si aquest vol canviar la seva posició. 
+		Per evitar-lo, ha de utilitzar la acció "pet" o utilitzar la espasa en cas de tenir-la (aquesta no es perd). 
+		Al fer "pet", el jugador té un 60% de possibilitat de sobreviure.
+		- El "Hermit", qui afecta positivament a la puntuació i nomès apareixerà en una ubicació específica.
+		Actúa com a casella segura, ja que si apareix ell, no pot aparèixer un llop.
+ 
+	- Canviada la ubicació del drac de fons i afegiment d'un nou "sprite", a més de dues noves accions:
+		- El primer cop que el jugador passi per la casella del drac, aquest estarà adormit.
+		- Al segon cop, aquest serà despert i assesinarà al jugador si intenta canviar de casella.
+		D'aquesta manera, si el jugador no té l'espasa, està condemnat.
+
+	- Noves funcions de "Victòria" i "Derrota". Aquestes acaben la partida blocant qualsevol acció i
+	mostren una pantalla i missatge especial.
+		- Al morir, el missatge varía en cas de morir per el llop al moure's, morir per al llop després de l'acció "pet",
+		o morir a mans del drac.
+		- Canvi de fons de pantalla al morir o guanyar, mes ambientat.
+
+	- Afegida puntuació que varia en base a:
+		- Sumar si aparèixen NPCs específics.
+		- Sumar si es viu contra el llop (+10).
+		- Sumar en cas de victòria (+20).
+		- Restar amb cada moviment realitzat (-1).
+		- Restar en cas de morir (-20).
