@@ -13,8 +13,40 @@
     <p id="npctext"></p>
     <p id="wintext"></img>
     <input id="input" type="text"> 
-    <button>enter</button>
+    <button>Enter</button>
   </div>
+
+  <div id="botones">
+    <button id="norte">North</button>
+    <button id="este">East</button>
+    <button id="oeste">West</button>
+    <button id="sur">South</button>
+    <button id="takestone">Take stone</button>
+    <button id="usestone">Use stone</button>
+    <button id="useflute">Use flute</button>
+    <button id="takeflute">Take flute</button>
+    <button id="usesword">Use sword</button>
+    <button id="takesword">Take sword</button>
+    <button id="pet">Pet</button>
+  </div>
+
+  <div id="messageContainer"></div>
+
+<div class="backpack-container">
+  <p class="pMotxilla">Items que tens:</p>
+  <div class="backpack-item">
+    <img src="stone.png" data-item="stone">
+  </div>
+  <div class="backpack-item">
+    <img src="flute.png" data-item="flute">
+  </div>
+  <div class="backpack-item">
+    <img src="sword.png" data-item="sword">
+  </div>
+</div>
+
+<div id="temps">Cronometre</div>
+  
 </body>
 <style>
     *
@@ -29,23 +61,23 @@
 @font-face 
 {
   font-family: Merriweather;
-  src: url("/../ForestofLyrica/imatges2/Merriweather.ttf");
+  src: url("../ForestofLyrica/imatges2/Merriweather.ttf");
 }
 
 @font-face 
 {
   font-family: Merriweather-Bold;
-  src: url("/../ForestofLyrica/imatges2/Merriweather-Bold.ttf");
+  src: url("../ForestofLyrica/imatges2/Merriweather-Bold.ttf");
 }
 
 @font-face 
 {
   font-family: Ginga;
-  src: url("/../ForestofLyrica/imatges2/Ginga.ttf");
+  src: url("../ForestofLyrica/imatges2/Ginga.ttf");
 }
 
 body {
-  background-image: url("/../ForestofLyrica/imatges2/wallpaper.png");
+  background-image: url("../ForestofLyrica/imatges2/wallpaper.png");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -162,7 +194,6 @@ button
     user-select: none;
 }
 
-
 #stage
 {
   margin: 0 auto;
@@ -174,6 +205,131 @@ button
   
 }
 
+#botones {
+text-align: center;
+position: relative;
+top: -180px;
+left: -5px;
+width: 100px;
+height: 100px;
+}
+
+#norte {
+  margin-left: 100px;
+  background-color: aquamarine;
+  position: absolute;
+}
+
+#este {
+  margin-left: 50px;
+  background-color: aquamarine;
+
+}
+
+#oeste {
+  margin-left: 150px;
+  background-color: aquamarine;
+
+}
+
+#usestone {
+margin-bottom: 50px;
+height: 35px;
+background-color: grey;
+}
+
+#takestone {
+  margin-bottom: 50px;
+  margin-left: 50px;
+  height: 35px;
+  background-color: grey;
+}
+
+#useflute {
+  margin-bottom: 50px;
+  height: 35px;
+  margin-left: 100px;
+  background-color: rgb(220, 220, 111);
+
+  }
+  
+#takeflute {
+  margin-bottom: 50px;
+  margin-left: 150px;
+  height: 35px;
+  background-color: rgb(220, 220, 111);
+  }
+
+  #usesword {
+    margin-bottom: 100px;
+    height: 37px;
+    background-color: #e56363;
+    }
+    
+  #takesword {
+    margin-bottom: 100px;
+    margin-left: 50px;
+    height: 37px;
+    background-color: #e56363;
+    }
+
+    #sur {
+      background-color: aquamarine;
+    }
+
+    #pet {
+    margin-bottom: 100px;
+    height: 37px;
+    background-color: #e56363;
+    margin-left: 100px;
+    }
+
+    #messageContainer {
+        height: 200px;
+        overflow-y: scroll;
+        border: 1px solid #ccc;
+        padding: 10px;
+        width: 400px;
+        color: white;
+        float: right;
+        /*margin-top: -300px;*/
+        top: 140px;
+        position: absolute;
+        right: 80px;
+    }
+
+    .backpack-item img {
+  opacity: 0.5;
+}
+
+.backpack-item {
+    display: inline-block;
+    width: 100px; 
+  }
+  
+  .backpack-item img {
+    width: 100px;
+    height: 100px;
+  }
+
+  .backpack-container {
+    position: absolute;
+    top: 300px;
+    left: 190px;
+    border: 1px solid rgb(235, 114, 114);
+    background-color: bisque;
+  }
+
+  .pMotxilla {
+    color: rgb(3, 0, 0);
+  }
+
+  #temps {
+    background-color: rgb(10, 112, 78);
+    color: white;
+    width: 300px;
+    margin-top: 0px;
+  }
 </style>
 
 <script src = "script.js"></script>

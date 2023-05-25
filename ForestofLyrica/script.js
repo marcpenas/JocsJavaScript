@@ -19,10 +19,12 @@ map[12] = "A beautiful waterfall";
 map[13] = "Some ancient ruins";
 map[14] = "An isolated cottage. Faint music comes from inside.";
 map[15] = "A large cave.";
-map[20] = "Everything seems dark here";
 
 // Set the player's start location
 let mapLocation = 4;
+
+// Cronometre
+let startTime;
 
 // Puntuació
 const score = document.querySelector("#score");
@@ -90,6 +92,10 @@ let deadPlayer = false;
 // Variable de victoria
 let win = false;
 
+// Historial missatges LOG
+let messageHistory = [];
+
+
 // Set the blocked path messages
 const blockedPathMessages = [];
 
@@ -126,8 +132,6 @@ helpMessages[10] = "It feels very safe in here";
 const items = ["stone"];
 const itemLocations = [8];
 
-// Objecte de troç de carn com a comodí contra els llops
-
 // NPCs
 const npc = ["hermit", "wolves", "gnome", "fairy", "dragonSleep", "dragonAwake"];
 
@@ -148,7 +152,7 @@ const npcMessage = document.querySelector("#npctext");
 
 // Stage
 const stageShow = document.querySelector("#stage");
-stageShow.style.background = "url('/../ForestofLyrica/imatges2/paper.png')";
+stageShow.style.background = "url('../ForestofLyrica/imatges2/paper.png')";
 
 // Victoria i Derrota
 const winlose = document.querySelector("#winlose");
@@ -185,8 +189,26 @@ window.addEventListener("keydown", keydownHandler, false);
 // To prevent NPC from appearing when the player wants to go beyond the limits of the map
 let blockedPath = 0;
 
+// Actualitzar opacitat motxilla (MOTXILLA)
+
+function updateBackpackOpacity() {
+    const backpackImages = document.querySelectorAll(".backpack-item img");
+    backpackImages.forEach((img) => {
+        const itemName = img.getAttribute("data-item");
+        if (backpack.includes(itemName)) {
+            img.style.opacity = "1";
+        } else {
+            img.style.opacity = "0.3";
+        }
+    });
+}
+  
+
 // Dispay the player's location
 render();
+
+// Guardar ultim missatge del joc
+
 
 function mousedownHandler() {
     button.style.background = "-webkit-linear-gradient(top, rgba(0,0,0,0.2), rgba(255,255,255,0.3))";
@@ -223,22 +245,23 @@ function npcfunction() {
     dragonImage.style.display = "none";
 
     if (blockedPath === 0) {
-    // El Hermit apareix en una ubicació especifica
+        // El Hermit apareix en una ubicació especifica
         if (mapLocation === 9) {
             points += 5;
             npcShowImg.style.display = "block";
             npcShow = npc.indexOf(npc[0]);
             npcMessage.innerHTML = "Hello, Stranger !<br>" + "I'm used to live in this hell of a forest, you're safe here !";
+
         }
         // El drac també hi és en una ubicació específica
         else if (mapLocation === 3) {
             if (dragonCount === 0) {
                 dragonImage.style.display = "block";
-                dragonImage.src = `/../ForestofLyrica/imatges2/${dragImages[0]}`;
+                dragonImage.src = `../ForestofLyrica/imatges2/${dragImages[0]}`;
                 npcMessage.innerHTML = "There's a Giant Dragon here !<br>" + "He seems asleep...";
             } else if (dragonCount === 1) {
                 dragonImage.style.display = "block";
-                dragonImage.src = `/../ForestofLyrica/imatges2/${dragImages[1]}`;
+                dragonImage.src = `../ForestofLyrica/imatges2/${dragImages[1]}`;
                 npcMessage.innerHTML = "Oh no ! The Giant Dragon has awoken !";
             }
         }
@@ -277,11 +300,11 @@ function npcfunction() {
         npcMessage.innerHTML = "Wow ! You found a fairy !";
         points += 10;
         break;
-      // Amb la línea següent, podem ignorar el default del switch:
-      // no default
+        // Amb la línea següent, podem ignorar el default del switch:
+        // no default
     }
     // La imatge per cada NPC
-    npcShowImg.src = `/../ForestofLyrica/imatges2/${npcImg[npcShow]}`;
+    npcShowImg.src = `../ForestofLyrica/imatges2/${npcImg[npcShow]}`;
 }
 
 function showScore() {
@@ -294,9 +317,9 @@ function showScore() {
 
 function backgroundImageFunction() {
     if (deadPlayer === true) {
-        bodybackground.style.background = "url('/../ForestofLyrica/imatges2/deathbackground.png')";
+        bodybackground.style.background = "url('../ForestofLyrica/imatges2/deathbackground.png')";
     } else if (win === true) {
-        bodybackground.style.background = "url('/../ForestofLyrica/imatges2/winbackground.png')";
+        bodybackground.style.background = "url('../ForestofLyrica/imatges2/winbackground.png')";
     }
     /* else {
         bodybackground.style.background =
@@ -319,12 +342,19 @@ function death() {
     input.disabled = true;
     // Mostrar la pantalla de gameover
     winlose.style.display = "block";
-    winlose.src = "/../ForestofLyrica/imatges2/gameover.png";
+    winlose.src = "../ForestofLyrica/imatges2/gameover.png";
     // Mostrar cartellera de mort
     wintext.style.color = "#790808";
     wintext.innerHTML = "You Died.";
     // Canviar fons del joc a un mes "tètric"
-    stageShow.style.background = "url('/../ForestofLyrica/imatges2/deadpaper.png')";
+    stageShow.style.background = "url('../ForestofLyrica/imatges2/deadpaper.png')";
+    // Cronometre
+    const endTime = new Date();
+    const duration = endTime - startTime;
+    const seconds = Math.floor(duration / 1000);
+    // Mostrar la duració en un div
+    const tiempoDiv = document.querySelector("#temps");
+    tiempoDiv.textContent = `Duració: ${seconds} segons`;
 }
 
 // Funció de victòria
@@ -347,7 +377,7 @@ function victory() {
     // Mostrar la pantalla de victòria
     images[3] = "winscreen.png";
     // Canviar el fons a un mes "Èpic"
-    stageShow.style.background = "url('/../ForestofLyrica/imatges2/winpaper.png')";
+    stageShow.style.background = "url('../ForestofLyrica/imatges2/winpaper.png')";
     // Fer que la pantalla de victoria ocupi tot el recuadre
     // Canviar color de text i mostrar-lo
     wintext.style.color = "#D2A010";
@@ -379,7 +409,7 @@ function killersFunction() {
         case "pet":
             playGame();
             break;
-        // no default
+            // no default
         }
     }
 
@@ -409,7 +439,7 @@ function killersFunction() {
             death();
             npcMessage.innerHTML = "You can't run from the dragon...<br>" + "It has split you in half !";
             break;
-        // no default
+            // no default
         }
     }
     // Crida de fons
@@ -422,7 +452,7 @@ function takeItem() {
     // Does the item exist in the game world
     // and is it at the player's current location?
     if (itemIndexNumber !== -1
-      && itemLocations[itemIndexNumber] === mapLocation) {
+        && itemLocations[itemIndexNumber] === mapLocation) {
         points += 5;
         gameMessage = `You take the ${item}.`;
 
@@ -436,9 +466,13 @@ function takeItem() {
         // Display in the console for testing
         console.log(`World items: ${items}`);
         console.log(`backpack items: ${backpack}`);
+
+        // Modificar opacity per la MOTXILLA
+        updateBackpackOpacity();
+
     } else {
-    // Message if you try and take an item
-    // that isn't in the current location
+        // Message if you try and take an item
+        // that isn't in the current location
         gameMessage = "You can't do that.";
     }
 }
@@ -446,7 +480,7 @@ function takeItem() {
 function dropItem() {
     // Try to drop the item only if the backpack isn't empty
     if (backpack.length !== 0) {
-    // Find the item's array index number in the backpack
+        // Find the item's array index number in the backpack
         const backpackIndexNumber = backpack.indexOf(item);
 
         // The item is in the backpack if backpackIndex number isn't -1
@@ -460,13 +494,17 @@ function dropItem() {
 
             // Remove the item from the player's backpack
             backpack.splice(backpackIndexNumber, 1);
+
+            // Actualitza el opacity de la MOTXILLA
+            updateBackpackOpacity();
+
         } else {
             // Message if the player tries to drop
             // something that's not in the backpack
             gameMessage = "You can't do that.";
         }
     } else {
-    // Message if the backpack is empty
+        // Message if the backpack is empty
         gameMessage = "You're not carrying anything.";
     }
 }
@@ -517,7 +555,7 @@ function useItem() {
                 victory();
                 gameMessage = "You swing the sword and slay the dragon! ";
                 gameMessage
-                += "You've saved the forest of Lyrica!";
+                        += "You've saved the forest of Lyrica!";
 
                 // Reset the location's help message
                 helpMessages[mapLocation] = "";
@@ -548,7 +586,7 @@ function useItem() {
                 gameMessage = "You fumble with the stone in your pocket.";
             }
             break;
-        // no default
+            // no default
         }
     }
 }
@@ -556,18 +594,17 @@ function useItem() {
 function render() {
     // Render the location
     output.innerHTML = map[mapLocation];
-    image.src = `/../ForestofLyrica/imatges2/${images[mapLocation]}`;
+    image.src = `../ForestofLyrica/imatges2/${images[mapLocation]}`;
     // Re-ajustar la imatge de fons
     bodybackground.style.background = "cover";
     // Display an item if there's one in this location
     // 1. Loop through all the game items
     for (let i = 0; i < items.length; i++) {
-    // Find out if there's an item at this location
+        // Find out if there's an item at this location
         if (mapLocation === itemLocations[i]) {
             // Display it
             output.innerHTML
-          += `<br>You see a <strong>${
-                    items[i]
+                += `<br>You see a <strong>${items[i]
                 }</strong> here.`;
         }
     }
@@ -582,8 +619,31 @@ function render() {
 
     // Clear the input field
     input.value = "";
+
+    // Agregar el missatge al historial LOG 
+    messageHistory.push(gameMessage);
+
+    // Renderitzar els missatges del contenidor LOG (els renderitza per afegir-los al llistat)
+    const messageContainer = document.querySelector("#messageContainer");
+    messageContainer.innerHTML = messageHistory.join("<br>");
 }
 function playGame() {
+
+    // Actualitzar opaciti MOTXILLA
+    updateBackpackOpacity();
+
+    // Actualitzar cronometre /(Falta el div)
+    if (!startTime) {
+        startTime = new Date();
+    }
+
+    // Agregar el missatge al historial LOG
+    messageHistory.push(gameMessage);
+
+    // Renderitzar els missatges al contenidor LOG
+    const messageContainer = document.querySelector("#messageContainer");
+    messageContainer.innerHTML = messageHistory.join("<br>");
+
     // Actualitzar Puntuació
     showScore();
     // Get the player's input and convert it to lowercase
@@ -715,7 +775,7 @@ function playGame() {
     // Apareixen NPCs
     if (deadPlayer === false) {
         if (action === "north" || action === "south" || action === "west" || action === "east"
-        && blockedPath === 0) {
+            && blockedPath === 0) {
             npcfunction();
         }
     }
@@ -723,3 +783,94 @@ function playGame() {
     // Render the game
     render();
 }
+
+// Jugar amb botons [Modificació 1]
+
+// Fer que els botons et moguin per el mapa
+// Direccions
+const btnNorth = document.getElementById("norte");
+const btnEast = document.getElementById("este");
+const btnWest = document.getElementById("oeste");
+const btnSouth = document.getElementById("sur");
+// Utiliztar/agafar pedra
+const usestone = document.getElementById("usestone");
+const takestone = document.getElementById("takestone");
+// Utiliztar/agafar flauta
+const useflute = document.getElementById("useflute");
+const takeflute = document.getElementById("takeflute");
+// Utilitzar/agafar espada
+const usesword = document.getElementById("usesword");
+const takesword = document.getElementById("takesword");
+
+// Utilitzar funcio "pet"
+const pet = document.getElementById("pet");
+
+// Agregar els EventListener
+btnNorth.addEventListener("click", function () {
+    input.value = "north";
+    playGame();
+    processInput();
+});
+
+btnEast.addEventListener("click", function () {
+    input.value = "east";
+    playGame();
+    processInput();
+});
+
+btnWest.addEventListener("click", function () {
+    input.value = "west";
+    playGame();
+    processInput();
+});
+
+btnSouth.addEventListener("click", function () {
+    input.value = "south";
+    playGame();
+    processInput();
+});
+
+usestone.addEventListener("click", function () {
+    input.value = "use stone";
+    playGame();
+    processInput();
+});
+
+takestone.addEventListener("click", function () {
+    input.value = "take stone";
+    playGame();
+    processInput();
+});
+
+useflute.addEventListener("click", function () {
+    input.value = "use flute";
+    playGame();
+    processInput();
+});
+
+takeflute.addEventListener("click", function () {
+    input.value = "take flute";
+    playGame();
+    processInput();
+});
+
+usesword.addEventListener("click", function () {
+    input.value = "use sword";
+    playGame();
+    processInput();
+});
+
+takesword.addEventListener("click", function () {
+    input.value = "take sword";
+    playGame();
+    processInput();
+});
+
+pet.addEventListener("click", function () {
+    input.value = "pet";
+    playGame();
+    processInput();
+});
+
+
+

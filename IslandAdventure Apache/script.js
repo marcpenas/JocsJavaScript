@@ -236,15 +236,15 @@ function gameMode(){
     map.sort(()=> Math.random() - 0.5);
     // No poden aparèixer pirates ni illes a l'ubicació del jugador incial
     // ni del drac.
-    /*for (let x = 0; x < map.length; x++){
-        for (let y = 0; y < map[0].length; y++){
+    for (let x = 0; x < gameObjects.length; x++){
+        for (let y = 0; y < gameObjects[0].length; y++){
             // Si hi ha un objecte al mapa a la mateixa posició que a gameObjects
             // Borra aquell objecte del mapa.
             if (gameObjects[x][y] != 0 && map[x][y] != 0){
                 map[x][y] = 0;
             }
         }
-    }*/
+    }
     // Configurar HOME a una ubicació específica en funció de la dificultat
     switch (gameModeSelect){
     case 1:
