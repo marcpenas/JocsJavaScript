@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>M&J Games</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f2f2f2;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+	  background-size: 400% 400%;
+	  animation: gradient 15s ease infinite;
+	  height: 100vh;
+    }
+
+    @keyframes gradient {
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
+}
+    
+    .container {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    
+    h1 {
+      text-align: center;
+      color: #333;
+      width: 100%;
+    }
+    
+    .game {
+      width: 45%;
+      margin: 20px;
+      padding: 20px;
+      text-align: center;
+      background-color: #fff;
+      border-radius: 5px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+    }
+    
+    .game:hover {
+      transform: scale(1.05);
+    }
+    
+    .game img {
+      width: 80%;
+      max-width: 300px;
+      height: auto;
+    }
+    
+    .game-title {
+      margin-top: 10px;
+      font-size: 20px;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>M&J Games</h1>
+    
+    <div class="game">
+      <a href="islandadventure.html">
+        <img src="islandadventure.png" alt="Island Adventure">
+        <h2 class="game-title">Island Adventure</h2>
+      </a>
+    </div>
+    
+    <div class="game">
+      <a href="forestoflyrica.html">
+        <img src="forestoflyrica.jpg" alt="Forest of Lyrica">
+        <h2 class="game-title">Forest of Lyrica</h2>
+      </a>
+    </div>
+  </div>
+</body>
+</html>
