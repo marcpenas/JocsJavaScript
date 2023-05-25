@@ -5,6 +5,7 @@ var output = document.querySelector("#output");
 //Add a keyboard listener
 window.addEventListener("keydown", keydownHandler, false);
 
+let body = document.querySelector("body");
 // Agafar imatge barco del menú
 let shipPlayer1 = document.querySelector("#ship1");
 let shipPlayer2 = document.querySelector("#ship2");
@@ -17,11 +18,24 @@ let rookiebutton = document.querySelector("#easybutton");
 let piratebutton = document.querySelector("#midbutton");
 let blackbeardbutton = document.querySelector("#hardbutton");
 
+let leftarrowP1 = document.querySelector("#leftarrow1");
+let rightarrowP1 = document.querySelector("#rightarrow1");
+
+leftarrowP1.addEventListener("click", rightP1, false);
+rightarrowP1.addEventListener("click", leftP1, false);
+
 rookiebutton.addEventListener("click", clickRookie, false);
 piratebutton.addEventListener("click", clickPirate, false);
 blackbeardbutton.addEventListener("click", clickBlackbeard, false);
 // Selecció de modo de joc
 let gameModeSelect = 0;
+// Selecció de barco
+let P1Skin = 1;
+// Canvi d'imatge per moviment
+let SkinDirection = "left";
+//Servirà posteriorment per les animacions
+let animationTimer = "";
+
 //let tentacleCounter = 0;
 let dragonImages = ["dragon1.png", "dragon2.png", "dragon3.png", "dragon4.png"];
 let dragonSelect = 0;
@@ -56,8 +70,8 @@ var PIRATE = 2;
 var HOME = 3;
 var SHIP = 4;
 var MONSTER = 5;
-let KRAKEN = 6;
-let TENTACLE = 7;
+/*let KRAKEN = 6;
+let TENTACLE = 7;*/
 
 //The size of each cell
 var SIZE = 64;
@@ -71,6 +85,26 @@ var shipRow;
 var shipColumn;
 var monsterRow;
 var monsterColumn;
+
+function leftP1(){
+    if (P1Skin > 1){
+        P1Skin = P1Skin - 1;
+    }
+    else if (P1Skin === 1){
+        P1Skin = 3;
+    }
+    shipSelect();
+}
+
+function rightP1(){
+    if (P1Skin <= 2){
+        P1Skin++;
+    }
+    else if (P1Skin === 3){
+        P1Skin = 1;
+    }
+    shipSelect();
+}
 
 // Funció per a reconeixer la ubicació dels objectes. 
 // Ho fem mitjançant una funció per a poder canviar la ubicació dels objectes (ex. Monster)
@@ -110,11 +144,15 @@ var gameMessage = "Use the arrow keys or WASD to find your way home.";
 
 
 function shipSelect(){
-    shipPlayer1.src = ("/IslandAdventure Apache/images/leftship1.png");
+    shipPlayer1.src = ("/IslandAdventure Apache/images/" + SkinDirection + "ship" + P1Skin + ".png");
     shipPlayer2.src = ("/IslandAdventure Apache/images/rightship1.png");
+    
 }
 
 function gameMode(){
+    if (gameModeSelect != 0){
+        body.style.backgroundImage = "url('/IslandAdventure Apache/images/piratebackground.png')";
+    }
     // Posició jugador
     gameObjects[6][0] = 4;
     // Quantitat d'enemics i amplitud del css del mapa en base al mode de joc
@@ -254,6 +292,8 @@ function keydownHandler(event)
     switch(event.keyCode)
     {
     case UP[0]: case UP[1]:
+        // Indicar moviment a la imatge del jugador
+        SkinDirection = "up";
         if (gameModeSelect === 3){
             //krakenCounter();
         }
@@ -271,6 +311,8 @@ function keydownHandler(event)
         break;
         
     case DOWN[0]: case DOWN[1]:
+        // Indicar moviment a la imatge del jugador
+        SkinDirection = "down";
         if (gameModeSelect === 3){
             //krakenCounter();
         }
@@ -283,6 +325,8 @@ function keydownHandler(event)
         break;
           
     case LEFT[0]: case LEFT[1]:
+        // Indicar moviment a la imatge del jugador
+        SkinDirection = "left";
         if (gameModeSelect === 3){
             // krakenCounter();
         }
@@ -295,6 +339,8 @@ function keydownHandler(event)
         break;  
           
     case RIGHT[0]: case RIGHT[1]:
+        // Indicar moviment a la imatge del jugador
+        SkinDirection = "right";
         if (gameModeSelect === 3){
             //krakenCounter();
         }
@@ -613,7 +659,12 @@ function render()
             stage.removeChild(stage.firstChild);
         }
     }
-  
+    
+    let dragonrow = -1;
+    let dragoncolumn = -1;
+    // Fem reset a l'animació per a evitar problemes.
+    clearTimeout(animationTimer);
+
     //Render the game by looping through the map arrays
     for(var row = 0; row < ROWS; row++) 
     {	
@@ -627,6 +678,9 @@ function render()
 
             //Add the img tag to the <div id="stage"> tag
             stage.appendChild(cell);
+
+            //
+            
 
             //Find the correct image for this map cell
             switch(map[row][column])
@@ -652,10 +706,13 @@ function render()
             switch(gameObjects[row][column])
             {
             case SHIP:
-                cell.src = "/IslandAdventure Apache/images/leftship1.png";
+                cell.src = "/IslandAdventure Apache/images/" + SkinDirection + "ship" + P1Skin + ".png";
                 break;   
             case MONSTER:
-                animation();
+                dragonrow = row;
+                dragoncolumn = column;
+                // Enviem la ubicació del drac a la funció d'animació
+                animation(cell, dragonrow, dragoncolumn);
                 break;
             /*case KRAKEN:
                 cell.src = "/IslandAdventure Apache/images/kraken.png";
@@ -682,13 +739,7 @@ function render()
             cell.style.left = column * SIZE + "px";
         }
     }
-
-    function animation(){
-        dragonSelect = (dragonSelect + 1) % dragonImages.length;
-        cell.src = "/IslandAdventure Apache/images/" + dragonImages[dragonSelect];
-        requestAnimationFrame(animation);
-    }
-  
+    
     //Display the game message
     output.innerHTML = gameMessage;
 	
@@ -696,4 +747,26 @@ function render()
     output.innerHTML 
     += "<br>Gold: " + gold + ", Food: " 
     + food + ", Experience: " + experience;
+}
+
+// Funció de animació
+function animation(cell, dragonrow, dragoncolumn){
+    // El selector del frame del drac corresponent
+    dragonSelect = (dragonSelect + 1) % dragonImages.length;
+    // Mostrar el drac a la cel·la pertinent 
+    cell.src = "/IslandAdventure Apache/images/" + dragonImages[dragonSelect];
+    // El bucle d'animació. 
+    // la variable global animationTimer li donem el bucle 
+    // ho fem així per incompatibilitats.
+    animationTimer = setTimeout(function(){
+        requestAnimationFrame(function(){
+            animation(cell, dragonrow, dragoncolumn);
+        });
+    }, 100);
+    // Amb setTimeout podem variar en forma numèrica
+    // la velocitat a la que requestAnimationFrame s'executa.
+    // requestAnimationFrame es l' opció que realitza el bucle d'animació.
+
+    // Finalment, executem la variable.
+    animationTimer;
 }
