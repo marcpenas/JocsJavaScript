@@ -36,9 +36,12 @@ let SkinDirection = "left";
 //Servirà posteriorment per les animacions
 let animationTimer = "";
 
-//let tentacleCounter = 0;
+let tentacleCounter = -1;
 let dragonImages = ["dragon1.png", "dragon2.png", "dragon3.png", "dragon4.png"];
 let dragonSelect = 0;
+let permission = false;
+let pirateImages = ["pirate1.png", "pirate2.png", "pirate3.png", "pirate4.png"];
+let pirateSelect = 0;
 shipSelect();
 //The game map (Canvis per afegir mes mapa)
 var map =
@@ -70,8 +73,8 @@ var PIRATE = 2;
 var HOME = 3;
 var SHIP = 4;
 var MONSTER = 5;
-/*let KRAKEN = 6;
-let TENTACLE = 7;*/
+let KRAKEN = 6;
+let TENTACLE = 7;
 
 //The size of each cell
 var SIZE = 64;
@@ -225,11 +228,10 @@ function gameMode(){
             map[Xisland][Yisland] = 1;
         }
 
-        // krakenAttack();
         // Canviar ubicació drac
-        gameObjects[3][1] = 5;
+        gameObjects[3][3] = 5;
         // Ubicació Kraken
-        gameObjects[4][8] = 6;
+        map[4][8] = 6;
 
     }
     // Mesclar el mapa
@@ -294,9 +296,6 @@ function keydownHandler(event)
     case UP[0]: case UP[1]:
         // Indicar moviment a la imatge del jugador
         SkinDirection = "up";
-        if (gameModeSelect === 3){
-            //krakenCounter();
-        }
         if(shipRow > 0)
         {
             //Clear the ship's current cell
@@ -313,9 +312,7 @@ function keydownHandler(event)
     case DOWN[0]: case DOWN[1]:
         // Indicar moviment a la imatge del jugador
         SkinDirection = "down";
-        if (gameModeSelect === 3){
-            //krakenCounter();
-        }
+        
         if(shipRow < ROWS - 1)
         {
             gameObjects[shipRow][shipColumn] = 0;
@@ -327,9 +324,6 @@ function keydownHandler(event)
     case LEFT[0]: case LEFT[1]:
         // Indicar moviment a la imatge del jugador
         SkinDirection = "left";
-        if (gameModeSelect === 3){
-            // krakenCounter();
-        }
         if(shipColumn > 0)
         {
             gameObjects[shipRow][shipColumn] = 0;
@@ -341,9 +335,6 @@ function keydownHandler(event)
     case RIGHT[0]: case RIGHT[1]:
         // Indicar moviment a la imatge del jugador
         SkinDirection = "right";
-        if (gameModeSelect === 3){
-            //krakenCounter();
-        }
         if(shipColumn < COLUMNS - 1)
         {
             gameObjects[shipRow][shipColumn] = 0;
@@ -381,13 +372,26 @@ function keydownHandler(event)
 
 
 function playGame(){
-  
+    if (gameModeSelect === 3){
+        krakenCounter();
+    }
     //Move the monster
     moveMonster();
   
   
     //Find out if the ship is touching the monster
     if(gameObjects[shipRow][shipColumn] === MONSTER)
+    {
+        endGame();
+    }
+
+    if(map[shipRow][shipColumn] === KRAKEN)
+    {
+        endGame();
+    }
+
+    if(map[shipRow][shipColumn] === TENTACLE && 
+        tentacleCounter != 0)
     {
         endGame();
     }
@@ -492,56 +496,52 @@ function moveMonster()
     }
 }
 
-/*function krakenAttack(){
+function krakenAttack(){
     // Utilitzant Set, podem establir unes coordenades específiques
     // a cada tentacle.
-    let tentacleSet = new Set();
+    //let tentacleSet = new Set();
     // Comptador el necessitem per a que la distribucio es faci quan volem
     if (tentacleCounter === 0){
         //Netejar tots els tentacles anteriors del mapa
-        for (let x = 0; x < gameObjects.length; x++){
-            for (let y = 0; y < gameObjects[x].length; y++){
-                if (gameObjects[x][y] === 7){
-                    gameObjects[x][y] = 0;
+        for (let x = 0; x < map.length; x++){
+            for (let y = 0; y < map[x].length; y++){
+                if (map[x][y] === 7){
+                    map[x][y] = 0;
                 }
             }
         }
         // Distribució dels tentacles al mapa
-        while (tentacleSet.size < 7) {
+        let tentacleattacks = 0;
+        while (tentacleattacks < 7){
             let Xtentacle = Math.floor(Math.random() * ROWS);
             let Ytentacle = Math.floor(Math.random() * COLUMNS);
-            // No ha de poder coincidir amb la casa, monstre o jugador
-            if (map[Xtentacle][Ytentacle] != map[0][10] &&
-                gameObjects[Xtentacle][Ytentacle] != gameObjects[6][0] &&
-                gameObjects[Xtentacle][Ytentacle] != MONSTER &&
-                !tentacleSet.has(`${Xtentacle},${Ytentacle}`)) {
-
-                tentacleSet.add(`${Xtentacle},${Ytentacle}`);
-                map[Xtentacle][Ytentacle] = 0;
-                gameObjects[Xtentacle][Ytentacle] = 7;
-
+            if (map[Xtentacle][Ytentacle] === 0){
+                map[Xtentacle][Ytentacle] = 7;
+                tentacleattacks ++;
             }
         }
-
-        
-    }
+         
+    }    
+    console.log("gameobjects: " + gameObjects);
     render();
-}*/
+}
 
-/*function krakenCounter(){
+function krakenCounter(){
     if (tentacleCounter === 0){
         tentacleCounter++;
     }
     else if (tentacleCounter === 1){
-        tentacleCounter++;
+        tentacleCounter = 0;
 
     }
-    else{
+    else {
         tentacleCounter = 0;
     }
     console.log("comptador" + tentacleCounter);
     krakenAttack();
-}*/
+
+    
+}
 
 function trade()
 {
@@ -627,6 +627,16 @@ function endGame()
         gameMessage 
       = "Your ship has been swallowed by a sea monster!";
     }
+    else if(map[shipRow][shipColumn] === KRAKEN)
+    {
+        gameMessage 
+      = "Your ship was no match for the Kraken !";
+    }
+    else if(map[shipRow][shipColumn] === TENTACLE)
+    {
+        gameMessage 
+      = "Your ship has been destroyed by the Kraken !";
+    }
     else
     {
     //Display the game message
@@ -664,7 +674,8 @@ function render()
     let dragoncolumn = -1;
     // Fem reset a l'animació per a evitar problemes.
     clearTimeout(animationTimer);
-
+    let tentacleNumber = 1;
+    let select = 0;
     //Render the game by looping through the map arrays
     for(var row = 0; row < ROWS; row++) 
     {	
@@ -695,8 +706,20 @@ function render()
 
             case PIRATE:
                 cell.src = "/IslandAdventure Apache/images/pirate.png";
-                break; 
-
+                break;
+            case TENTACLE:
+                if (tentacleCounter === 0){
+                    cell.src = "/IslandAdventure Apache/images/watertentacle.png";
+                }
+                else {
+                    tentacleNumber = [1, 2, 3];
+                    select = Math.floor(Math.random() * tentacleNumber.length);
+                    cell.src = "/IslandAdventure Apache/images/tentacle" + tentacleNumber[select] + ".png";
+                }
+                break;
+            case KRAKEN:
+                cell.src = "/IslandAdventure Apache/images/kraken.png";
+                break;
             case HOME:
                 cell.src = "/IslandAdventure Apache/images/home.png";
                 break;   
@@ -714,21 +737,6 @@ function render()
                 // Enviem la ubicació del drac a la funció d'animació
                 animation(cell, dragonrow, dragoncolumn);
                 break;
-            /*case KRAKEN:
-                cell.src = "/IslandAdventure Apache/images/kraken.png";
-                break;
-            case TENTACLE:
-                let tentacleNumber = 1;
-                let select = 0;
-                if (tentacleCounter === 0){
-                    cell.src = "/IslandAdventure Apache/images/watertentacle.png";
-                }
-                else {
-                    tentacleNumber = [1, 2, 3];
-                    select = Math.floor(Math.random() * tentacleNumber.length);
-                    cell.src = "/IslandAdventure Apache/images/tentacle" + tentacleNumber[select] + ".png";
-                }
-                break;*/
             case HOME:
                 cell.src = "/IslandAdventure Apache/images/home.png";
                 break;  
@@ -749,7 +757,7 @@ function render()
     + food + ", Experience: " + experience;
 }
 
-// Funció de animació
+// Funció d' animació
 function animation(cell, dragonrow, dragoncolumn){
     // El selector del frame del drac corresponent
     dragonSelect = (dragonSelect + 1) % dragonImages.length;
@@ -766,7 +774,7 @@ function animation(cell, dragonrow, dragoncolumn){
     // Amb setTimeout podem variar en forma numèrica
     // la velocitat a la que requestAnimationFrame s'executa.
     // requestAnimationFrame es l' opció que realitza el bucle d'animació.
-
+    permission = true;
     // Finalment, executem la variable.
     animationTimer;
 }
