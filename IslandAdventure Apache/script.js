@@ -91,6 +91,7 @@ var shipColumn;
 var monsterRow;
 var monsterColumn;
 
+// Butons Fletxetes
 function leftP1(){
     if (P1Skin > 1){
         P1Skin = P1Skin - 1;
@@ -175,6 +176,7 @@ function gameMode(){
             let Yisland = Math.floor(Math.random() * 7);
             map[Xisland][Yisland] = 1;
         }
+        // Monstre
         gameObjects[3][1] = 5;
     }
     
@@ -379,8 +381,7 @@ function playGame(){
     }
     //Move the monster
     moveMonster();
-  
-  
+
     //Find out if the ship is touching the monster
     if(gameObjects[shipRow][shipColumn] === MONSTER)
     {
@@ -501,7 +502,6 @@ function moveMonster()
 function krakenAttack(){
     // Utilitzant Set, podem establir unes coordenades específiques
     // a cada tentacle.
-    //let tentacleSet = new Set();
     // Comptador el necessitem per a que la distribucio es faci quan volem
     if (tentacleCounter === 0){
         //Netejar tots els tentacles anteriors del mapa
@@ -542,7 +542,6 @@ function krakenCounter(){
     console.log("comptador" + tentacleCounter);
     krakenAttack();
 
-    
 }
 
 function trade()
@@ -672,7 +671,7 @@ function endGame()
         title.style.color = "gold";
         gamemenu.style.backgroundImage = "url('/IslandAdventure Apache/images/playerwin.png')";
     }
-    output.style.weight = "bold";
+    output.style.weight = "bolder";
     //Remove the keyboard listener to end the game
     window.removeEventListener("keydown", keydownHandler, false);
 }
