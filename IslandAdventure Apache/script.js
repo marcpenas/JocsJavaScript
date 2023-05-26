@@ -39,9 +39,6 @@ let animationTimer = "";
 let tentacleCounter = -1;
 let dragonImages = ["dragon1.png", "dragon2.png", "dragon3.png", "dragon4.png"];
 let dragonSelect = 0;
-let permission = false;
-let pirateImages = ["pirate1.png", "pirate2.png", "pirate3.png", "pirate4.png"];
-let pirateSelect = 0;
 shipSelect();
 //The game map (Canvis per afegir mes mapa)
 var map =
@@ -774,7 +771,6 @@ function animation(cell, dragonrow, dragoncolumn){
     // Amb setTimeout podem variar en forma numèrica
     // la velocitat a la que requestAnimationFrame s'executa.
     // requestAnimationFrame es l' opció que realitza el bucle d'animació.
-    permission = true;
     // Finalment, executem la variable.
     animationTimer;
 }
