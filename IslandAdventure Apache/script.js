@@ -5,6 +5,7 @@ var output = document.querySelector("#output");
 //Add a keyboard listener
 window.addEventListener("keydown", keydownHandler, false);
 
+let title = document.querySelector("#title");
 let body = document.querySelector("body");
 // Agafar imatge barco del menú
 let shipPlayer1 = document.querySelector("#ship1");
@@ -35,6 +36,10 @@ let P1Skin = 1;
 let SkinDirection = "left";
 //Servirà posteriorment per les animacions
 let animationTimer = "";
+
+let P1win = false;
+let P1looseKraken = false;
+let P1loose = false;
 
 let tentacleCounter = -1;
 let dragonImages = ["dragon1.png", "dragon2.png", "dragon3.png", "dragon4.png"];
@@ -618,21 +623,27 @@ function endGame()
         //Display the game message
         gameMessage 
       = "You made it home ALIVE! " + "Final Score: " + score; 
+        P1win = true;
+
     }
     else if(gameObjects[shipRow][shipColumn] === MONSTER)
     {
         gameMessage 
       = "Your ship has been swallowed by a sea monster!";
+        gamemenu.style.backgroundImage = "url('/IslandAdventure Apache/images/dragondeath.png')";
     }
     else if(map[shipRow][shipColumn] === KRAKEN)
     {
         gameMessage 
       = "Your ship was no match for the Kraken !";
+        P1looseKraken = true;
+
     }
     else if(map[shipRow][shipColumn] === TENTACLE)
     {
         gameMessage 
       = "Your ship has been destroyed by the Kraken !";
+        P1looseKraken = true;
     }
     else
     {
@@ -640,16 +651,28 @@ function endGame()
         if(gold <= 0)
         {
             gameMessage += " You've run out of gold!"; 
+            P1loose = true;
         }
         else
         {
             gameMessage += " You've run out of food!"; 
+            P1loose = true;
         }
     
         gameMessage 
       += " Your crew throws you overboard!"; 
     }
-  
+
+    if (P1win != true){
+        title.innerHTML = "You Died";
+        title.style.color = "red";
+    }
+    else {
+        title.innerHTML = "You Win !";
+        title.style.color = "gold";
+        gamemenu.style.backgroundImage = "url('/IslandAdventure Apache/images/playerwin.png')";
+    }
+    output.style.weight = "bold";
     //Remove the keyboard listener to end the game
     window.removeEventListener("keydown", keydownHandler, false);
 }
@@ -671,6 +694,7 @@ function render()
     let dragoncolumn = -1;
     // Fem reset a l'animació per a evitar problemes.
     clearTimeout(animationTimer);
+    // Variables de selecció aleatoria de tentacle
     let tentacleNumber = 1;
     let select = 0;
     //Render the game by looping through the map arrays
@@ -686,9 +710,6 @@ function render()
 
             //Add the img tag to the <div id="stage"> tag
             stage.appendChild(cell);
-
-            //
-            
 
             //Find the correct image for this map cell
             switch(map[row][column])
@@ -727,6 +748,14 @@ function render()
             {
             case SHIP:
                 cell.src = "/IslandAdventure Apache/images/" + SkinDirection + "ship" + P1Skin + ".png";
+                if (P1loose === true){
+                    cell.src = "/IslandAdventure Apache/images/skull.png";
+                    gamemenu.style.backgroundImage = "url('/IslandAdventure Apache/images/playerdeath.png')";
+                }
+                else if (P1looseKraken === true){
+                    cell.src = "/IslandAdventure Apache/images/tentacle2.png";
+                    gamemenu.style.backgroundImage = "url('/IslandAdventure Apache/images/krakendeath.png')";
+                }
                 break;   
             case MONSTER:
                 dragonrow = row;

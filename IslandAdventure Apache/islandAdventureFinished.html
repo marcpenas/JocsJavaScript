@@ -120,7 +120,7 @@ body
 }
 #ships #shipPlayer2
 {
-  display: inline-block;
+  display: none;
   background-color: #422D21;
   border: solid 5px antiquewhite;
   height: 400px;
@@ -176,7 +176,6 @@ body
   background-image: url("/IslandAdventure Apache/images/rightarrow.png");
   background-size: cover;
 }
-
 p
 {
   font-family: PiratesWriters;
@@ -220,8 +219,9 @@ p
 
 
 <section id="game">
-  <h1>Island Adventure</h1>
+  <h1 id = "title">Island Adventure</h1>
   <div id="stage"></div>
+  <img id = "winlose">
   <p id="output"></p> 
 </section>
 <script src = "script.js"></script>
