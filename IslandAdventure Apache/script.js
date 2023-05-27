@@ -1,5 +1,3 @@
-// Bona Tarda, m'agrada el futbol
-
 //Get a reference to the stage and output
 var stage = document.querySelector("#stage");
 var output = document.querySelector("#output");
